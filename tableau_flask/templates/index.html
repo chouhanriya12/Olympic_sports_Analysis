@@ -1,0 +1,501 @@
+{% extends "base.html" %}
+{% block title %}OlympicsAnalytics — Global Sports Performance Analytics{% endblock %}
+
+{% block content %}
+
+<!-- ══════════════════════════════════════════════════════════════
+     HERO SECTION
+══════════════════════════════════════════════════════════════ -->
+<section class="hero-section" id="hero">
+  <div class="hero-overlay"></div>
+  <div class="hero-particles" id="heroParticles"></div>
+
+  <div class="container-xl h-100">
+    <div class="row h-100 align-items-center">
+      <div class="col-lg-8 col-xl-7" data-aos="fade-right">
+
+        <!-- Olympic rings -->
+        <div class="olympic-rings mb-4">
+          <span class="ring ring-blue"></span>
+          <span class="ring ring-yellow"></span>
+          <span class="ring ring-black"></span>
+          <span class="ring ring-green"></span>
+          <span class="ring ring-red"></span>
+        </div>
+
+        <div class="hero-badge mb-3">
+          <i class="bi bi-trophy-fill me-2"></i>Since 1896 — 120+ Years of Olympic Excellence
+        </div>
+
+        <h1 class="hero-title">
+          Global Sports<br />
+          <span class="text-gold">Performance Analytics</span><br />
+          Dashboard
+        </h1>
+
+        <p class="hero-subtitle mt-3 mb-4">
+          Discover the stories behind every medal. Explore 120+ years of Olympic data
+          through interactive dashboards, powerful analytics, and stunning visualisations
+          spanning {{ stats.get('total_nations', '200+') }} nations and
+          {{ stats.get('total_sports', '35+') }} sports.
+        </p>
+
+        <div class="d-flex flex-wrap gap-3">
+          <a href="{{ url_for('dashboard') }}" class="btn btn-gold btn-lg px-4">
+            <i class="bi bi-speedometer2 me-2"></i>Explore Analytics
+          </a>
+          <a href="{{ url_for('story') }}" class="btn btn-outline-light btn-lg px-4">
+            <i class="bi bi-book me-2"></i>View Story
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Hero stats card -->
+      <div class="col-lg-4 col-xl-5 d-none d-lg-flex justify-content-center" data-aos="fade-left">
+        <div class="hero-stats-card">
+          <div class="hero-stat-item">
+            <div class="hero-stat-icon gold"><i class="bi bi-trophy-fill"></i></div>
+            <div>
+              <div class="hero-stat-value counter" data-target="{{ stats.get('gold_medals', 0) }}">0</div>
+              <div class="hero-stat-label">Gold Medals</div>
+            </div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-icon silver"><i class="bi bi-trophy-fill"></i></div>
+            <div>
+              <div class="hero-stat-value counter" data-target="{{ stats.get('silver_medals', 0) }}">0</div>
+              <div class="hero-stat-label">Silver Medals</div>
+            </div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-icon bronze"><i class="bi bi-trophy-fill"></i></div>
+            <div>
+              <div class="hero-stat-value counter" data-target="{{ stats.get('bronze_medals', 0) }}">0</div>
+              <div class="hero-stat-label">Bronze Medals</div>
+            </div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-icon blue"><i class="bi bi-people-fill"></i></div>
+            <div>
+              <div class="hero-stat-value counter" data-target="{{ stats.get('total_athletes', 0) }}">0</div>
+              <div class="hero-stat-label">Total Athletes</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="hero-scroll">
+    <a href="#stats-section">
+      <i class="bi bi-chevron-double-down"></i>
+    </a>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     KEY STATISTICS BAR
+══════════════════════════════════════════════════════════════ -->
+<section class="stats-bar" id="stats-section">
+  <div class="container-xl">
+    <div class="row g-0">
+      <div class="col-6 col-md-3">
+        <div class="stat-bar-item">
+          <div class="stat-bar-icon"><i class="bi bi-calendar-range"></i></div>
+          <div class="stat-bar-value">120+</div>
+          <div class="stat-bar-label">Years of Data</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-bar-item">
+          <div class="stat-bar-icon"><i class="bi bi-flag-fill"></i></div>
+          <div class="stat-bar-value">{{ stats.get('total_nations', '200+') }}</div>
+          <div class="stat-bar-label">Nations</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-bar-item">
+          <div class="stat-bar-icon"><i class="bi bi-controller"></i></div>
+          <div class="stat-bar-value">{{ stats.get('total_sports', '35+') }}</div>
+          <div class="stat-bar-label">Sports Categories</div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-bar-item">
+          <div class="stat-bar-icon"><i class="bi bi-person-badge"></i></div>
+          <div class="stat-bar-value">{{ "{:,}".format(stats.get('total_athletes', 0)) }}</div>
+          <div class="stat-bar-label">Athlete Records</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     MEDALS SECTION
+══════════════════════════════════════════════════════════════ -->
+<section class="section-padded bg-dark-navy" id="medals">
+  <div class="container-xl">
+    <div class="section-header text-center mb-5" data-aos="fade-up">
+      <div class="section-badge">
+        <i class="bi bi-trophy me-2"></i>Olympic Medals
+      </div>
+      <h2 class="section-title">Medal <span class="text-gold">Intelligence</span></h2>
+      <p class="section-subtitle">
+        Deep-dive into every gold, silver and bronze ever awarded across the modern Olympic Games.
+      </p>
+    </div>
+
+    <div class="row g-4 justify-content-center">
+      <!-- Gold -->
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="medal-card gold-card">
+          <div class="medal-icon">🥇</div>
+          <h3 class="medal-count counter" data-target="{{ stats.get('gold_medals', 0) }}">0</h3>
+          <p class="medal-label">Gold Medals</p>
+          <div class="medal-bar gold-bar" style="width: 100%"></div>
+        </div>
+      </div>
+      <!-- Silver -->
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="medal-card silver-card">
+          <div class="medal-icon">🥈</div>
+          <h3 class="medal-count counter" data-target="{{ stats.get('silver_medals', 0) }}">0</h3>
+          <p class="medal-label">Silver Medals</p>
+          <div class="medal-bar silver-bar" style="width: 95%"></div>
+        </div>
+      </div>
+      <!-- Bronze -->
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="medal-card bronze-card">
+          <div class="medal-icon">🥉</div>
+          <h3 class="medal-count counter" data-target="{{ stats.get('bronze_medals', 0) }}">0</h3>
+          <p class="medal-label">Bronze Medals</p>
+          <div class="medal-bar bronze-bar" style="width: 90%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     PROJECT OVERVIEW — 3 FEATURE CARDS
+══════════════════════════════════════════════════════════════ -->
+<section class="section-padded" id="overview">
+  <div class="container-xl">
+    <div class="section-header text-center mb-5" data-aos="fade-up">
+      <div class="section-badge">
+        <i class="bi bi-grid me-2"></i>Platform Features
+      </div>
+      <h2 class="section-title">What <span class="text-gold">OlympicsAnalytics</span> Offers</h2>
+    </div>
+
+    <div class="row g-4">
+      <!-- Comprehensive Data -->
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="0">
+        <div class="feature-card h-100">
+          <div class="feature-icon">
+            <i class="bi bi-database-fill"></i>
+          </div>
+          <h4 class="feature-title">Comprehensive Data</h4>
+          <p class="feature-text">
+            Every athlete record from Athens 1896 to Tokyo 2020, cleaned, normalised
+            and ready for analysis. No guesswork — only real numbers.
+          </p>
+          <ul class="feature-list">
+            <li><i class="bi bi-check-circle-fill text-gold me-2"></i>{{ "{:,}".format(stats.get('total_athletes', 0)) }} athlete-event records</li>
+            <li><i class="bi bi-check-circle-fill text-gold me-2"></i>Missing values handled correctly</li>
+            <li><i class="bi bi-check-circle-fill text-gold me-2"></i>{{ stats.get('total_sports', 35) }} sport categories</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Global Coverage -->
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="feature-card h-100">
+          <div class="feature-icon">
+            <i class="bi bi-globe-americas"></i>
+          </div>
+          <h4 class="feature-title">Global Coverage</h4>
+          <p class="feature-text">
+            Analyse performance across all {{ stats.get('total_nations', '200+') }} participating nations, from
+            Olympic powerhouses to first-time contenders, with regional breakdowns.
+          </p>
+          <ul class="feature-list">
+            <li><i class="bi bi-check-circle-fill text-gold me-2"></i>{{ stats.get('total_nations', '200+') }} nations represented</li>
+            <li><i class="bi bi-check-circle-fill text-gold me-2"></i>NOC standardised codes</li>
+            <li><i class="bi bi-check-circle-fill text-gold me-2"></i>Regional performance patterns</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Medal Intelligence -->
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="feature-card h-100">
+          <div class="feature-icon">
+            <i class="bi bi-bar-chart-line-fill"></i>
+          </div>
+          <h4 class="feature-title">Interactive Analytics</h4>
+          <p class="feature-text">
+            Embedded Tableau dashboards and stories let you explore the data
+            with interactive filters by year, country, sport and gender.
+          </p>
+          <ul class="feature-list">
+            <li><i class="bi bi-check-circle-fill text-gold me-2"></i>Tableau dashboard embedded</li>
+            <li><i class="bi bi-check-circle-fill text-gold me-2"></i>7-scene Olympic story</li>
+            <li><i class="bi bi-check-circle-fill text-gold me-2"></i>Built-in Chart.js previews</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     LIVE DATA PREVIEW (Chart.js)
+══════════════════════════════════════════════════════════════ -->
+<section class="section-padded bg-dark-navy" id="preview">
+  <div class="container-xl">
+    <div class="section-header text-center mb-5" data-aos="fade-up">
+      <div class="section-badge">
+        <i class="bi bi-graph-up me-2"></i>Data Insights Preview
+      </div>
+      <h2 class="section-title">Quick <span class="text-gold">Insights</span></h2>
+      <p class="section-subtitle">Live charts powered directly from the cleaned Olympic dataset.</p>
+    </div>
+
+    <div class="row g-4">
+      <!-- Medals Over Time -->
+      <div class="col-lg-8" data-aos="fade-up">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h5 class="chart-card-title">
+              <i class="bi bi-graph-up-arrow me-2 text-gold"></i>Olympic Medals Over Time
+            </h5>
+          </div>
+          <div class="chart-card-body">
+            <canvas id="medalsOverTimeChart" height="250"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gender Participation -->
+      <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="chart-card h-100">
+          <div class="chart-card-header">
+            <h5 class="chart-card-title">
+              <i class="bi bi-people me-2 text-gold"></i>Gender Participation
+            </h5>
+          </div>
+          <div class="chart-card-body d-flex align-items-center justify-content-center">
+            <canvas id="genderChart" style="max-height:280px;"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Countries -->
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="50">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h5 class="chart-card-title">
+              <i class="bi bi-bar-chart-fill me-2 text-gold"></i>Top 10 Countries by Medals
+            </h5>
+          </div>
+          <div class="chart-card-body">
+            <canvas id="topCountriesChart" height="220"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sports Distribution -->
+      <div class="col-lg-6" data-aos="fade-up" data-aos-delay="150">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h5 class="chart-card-title">
+              <i class="bi bi-pie-chart-fill me-2 text-gold"></i>Medals by Sport (Top 8)
+            </h5>
+          </div>
+          <div class="chart-card-body">
+            <canvas id="sportsChart" height="220"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center mt-5" data-aos="fade-up">
+      <a href="{{ url_for('dashboard') }}" class="btn btn-gold btn-lg px-5">
+        <i class="bi bi-speedometer2 me-2"></i>Open Full Interactive Dashboard
+      </a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ══════════════════════════════════════════════════════════════
+     CTA SECTION
+══════════════════════════════════════════════════════════════ -->
+<section class="cta-section">
+  <div class="container-xl text-center">
+    <div class="olympic-rings mb-4 justify-content-center">
+      <span class="ring ring-blue"></span>
+      <span class="ring ring-yellow"></span>
+      <span class="ring ring-black"></span>
+      <span class="ring ring-green"></span>
+      <span class="ring ring-red"></span>
+    </div>
+    <h2 class="cta-title">Ready to Explore Olympic History?</h2>
+    <p class="cta-subtitle">
+      Dive into interactive dashboards, powerful filters, and 120+ years of data.
+    </p>
+    <div class="d-flex justify-content-center flex-wrap gap-3 mt-4">
+      <a href="{{ url_for('dashboard') }}" class="btn btn-gold btn-lg px-5">
+        <i class="bi bi-speedometer2 me-2"></i>Open Dashboard
+      </a>
+      <a href="{{ url_for('insights') }}" class="btn btn-outline-light btn-lg px-5">
+        <i class="bi bi-lightbulb me-2"></i>Read Insights
+      </a>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+/* ── Fetch stats from API and render Chart.js previews ── */
+fetch('/api/stats')
+  .then(r => r.json())
+  .then(data => {
+    renderMedalsOverTime(data.medals_by_year || []);
+    renderGenderChart(data);
+    renderTopCountries(data.top10_countries || []);
+    renderSportsChart(data.medals_by_sport || []);
+  })
+  .catch(err => console.warn('Stats API unavailable:', err));
+
+/* Colour palette */
+const GOLD   = '#FFD700';
+const SILVER = '#C0C0C0';
+const BRONZE = '#CD7F32';
+const NAVY   = '#0a1628';
+const ACCENT = '#3B82F6';
+const GRIDCLR = 'rgba(255,255,255,0.08)';
+const TXTCLR  = 'rgba(255,255,255,0.75)';
+
+Chart.defaults.color = TXTCLR;
+Chart.defaults.font.family = 'Inter, sans-serif';
+
+function renderMedalsOverTime(yearData) {
+  const labels = yearData.map(d => d.Year);
+  const vals   = yearData.map(d => d.Medals);
+  new Chart(document.getElementById('medalsOverTimeChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Medals Awarded',
+        data: vals,
+        borderColor: GOLD,
+        backgroundColor: 'rgba(255,215,0,0.12)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 4,
+        pointBackgroundColor: GOLD,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: GRIDCLR }, ticks: { maxTicksLimit: 10 } },
+        y: { grid: { color: GRIDCLR }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+function renderGenderChart(data) {
+  new Chart(document.getElementById('genderChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Male', 'Female'],
+      datasets: [{
+        data: [data.male_athletes || 0, data.female_athletes || 0],
+        backgroundColor: [ACCENT, '#EC4899'],
+        borderWidth: 0,
+        hoverOffset: 10,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { padding: 16, font: { size: 13 } }
+        }
+      }
+    }
+  });
+}
+
+function renderTopCountries(countries) {
+  const labels = countries.map(c => c.NOC);
+  const vals   = countries.map(c => c.Medals);
+  new Chart(document.getElementById('topCountriesChart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Medals',
+        data: vals,
+        backgroundColor: [
+          GOLD, SILVER, BRONZE,
+          '#3B82F6','#10B981','#8B5CF6',
+          '#F59E0B','#EF4444','#06B6D4','#84CC16'
+        ],
+        borderRadius: 6,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: GRIDCLR } },
+        y: { grid: { color: GRIDCLR }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+function renderSportsChart(sports) {
+  const top8 = sports.slice(0, 8);
+  new Chart(document.getElementById('sportsChart'), {
+    type: 'bar',
+    data: {
+      labels: top8.map(s => s.Sport),
+      datasets: [{
+        label: 'Medals',
+        data: top8.map(s => s.Medals),
+        backgroundColor: 'rgba(255,215,0,0.75)',
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: GRIDCLR }, beginAtZero: true },
+        y: { grid: { color: GRIDCLR } }
+      }
+    }
+  });
+}
+</script>
+{% endblock %}

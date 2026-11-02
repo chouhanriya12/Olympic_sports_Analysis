@@ -1,0 +1,427 @@
+{% extends "base.html" %}
+{% block title %}About Project — OlympicsAnalytics{% endblock %}
+
+{% block content %}
+
+<!-- ── Page Header ─────────────────────────────────────────────────── -->
+<section class="page-header">
+  <div class="container-xl">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb breadcrumb-dark mb-2">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item active">About</li>
+      </ol>
+    </nav>
+    <h1 class="page-title">
+      <i class="bi bi-info-circle text-gold me-3"></i>About the Project
+    </h1>
+    <p class="page-subtitle">
+      Everything you need to know about OlympicsAnalytics — objectives, dataset,
+      technologies, methodology, and outcomes.
+    </p>
+  </div>
+</section>
+
+
+<!-- ── NAV TABS ───────────────────────────────────────────────────── -->
+<section class="bg-dark-navy py-2">
+  <div class="container-xl">
+    <ul class="nav about-tabs" id="aboutTabs">
+      <li class="nav-item"><a class="about-tab-link active" href="#objectives" onclick="scrollToSection('objectives',this)">Objectives</a></li>
+      <li class="nav-item"><a class="about-tab-link" href="#problem" onclick="scrollToSection('problem',this)">Problem Statement</a></li>
+      <li class="nav-item"><a class="about-tab-link" href="#dataset" onclick="scrollToSection('dataset',this)">Dataset</a></li>
+      <li class="nav-item"><a class="about-tab-link" href="#technology" onclick="scrollToSection('technology',this)">Technology</a></li>
+      <li class="nav-item"><a class="about-tab-link" href="#methodology" onclick="scrollToSection('methodology',this)">Methodology</a></li>
+      <li class="nav-item"><a class="about-tab-link" href="#outcomes" onclick="scrollToSection('outcomes',this)">Outcomes</a></li>
+    </ul>
+  </div>
+</section>
+
+
+<!-- ── OBJECTIVES ─────────────────────────────────────────────────── -->
+<section class="section-padded" id="objectives">
+  <div class="container-xl">
+    <div class="about-section-header">
+      <span class="about-section-num">01</span>
+      <h2 class="about-section-title">Project <span class="text-gold">Objectives</span></h2>
+    </div>
+    <div class="row g-4 mt-3">
+      <div class="col-lg-6">
+        <p class="about-text">
+          OlympicsAnalytics was created to demonstrate how modern data science and
+          business intelligence tools can be combined to build a professional analytics
+          platform. The project targets students, researchers, and sports analytics
+          enthusiasts who want to explore Olympic data interactively.
+        </p>
+        <p class="about-text">
+          The primary goal is to transform raw historical Olympic data into meaningful
+          insights through cleaning, analysis, and interactive visualisation — published
+          as a fully hosted web application.
+        </p>
+      </div>
+      <div class="col-lg-6">
+        <ul class="about-list">
+          <li><i class="bi bi-check2-circle text-gold me-2"></i>Collect and clean historical Olympic dataset</li>
+          <li><i class="bi bi-check2-circle text-gold me-2"></i>Perform exploratory data analysis using Python Pandas</li>
+          <li><i class="bi bi-check2-circle text-gold me-2"></i>Build an interactive Tableau dashboard and story</li>
+          <li><i class="bi bi-check2-circle text-gold me-2"></i>Embed Tableau into a professional Flask web application</li>
+          <li><i class="bi bi-check2-circle text-gold me-2"></i>Present data insights on country, sport and gender performance</li>
+          <li><i class="bi bi-check2-circle text-gold me-2"></i>Deploy a production-ready web app on Render</li>
+          <li><i class="bi bi-check2-circle text-gold me-2"></i>Document the entire process professionally</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── PROBLEM STATEMENT ──────────────────────────────────────────── -->
+<section class="section-padded bg-dark-navy" id="problem">
+  <div class="container-xl">
+    <div class="about-section-header">
+      <span class="about-section-num">02</span>
+      <h2 class="about-section-title">Problem <span class="text-gold">Statement</span></h2>
+    </div>
+    <div class="row g-4 mt-3">
+      <div class="col-lg-8">
+        <p class="about-text">
+          The Olympic Games generate enormous volumes of data spanning athletes, events,
+          countries and years. However, raw Olympic datasets are scattered, inconsistently
+          formatted, and difficult to analyse without specialised tools.
+        </p>
+        <p class="about-text">
+          Existing publicly available analyses are often static, limited in scope, or
+          require specialised software to view. There is a need for an accessible,
+          interactive, web-based analytics platform that transforms this data into
+          actionable insights visible to anyone with a browser.
+        </p>
+        <div class="problem-highlight mt-3">
+          <h5 class="text-gold">Core Problem</h5>
+          <p class="mb-0">
+            How can we create an interactive, web-accessible platform that transforms
+            120+ years of raw Olympic data into clear, actionable performance insights
+            for countries, athletes, sports and genders — without requiring any specialised
+            software on the viewer's side?
+          </p>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="about-stat-card">
+          <h5 class="text-gold mb-3">Dataset Challenges</h5>
+          <ul class="about-list">
+            <li><i class="bi bi-exclamation-circle text-warning me-2"></i>Missing medal values for non-winners</li>
+            <li><i class="bi bi-exclamation-circle text-warning me-2"></i>Inconsistent country/NOC naming</li>
+            <li><i class="bi bi-exclamation-circle text-warning me-2"></i>Duplicate athlete records</li>
+            <li><i class="bi bi-exclamation-circle text-warning me-2"></i>Mixed data types (age, year)</li>
+            <li><i class="bi bi-exclamation-circle text-warning me-2"></i>Records spanning 28 Olympic Games</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── DATASET ─────────────────────────────────────────────────────── -->
+<section class="section-padded" id="dataset">
+  <div class="container-xl">
+    <div class="about-section-header">
+      <span class="about-section-num">03</span>
+      <h2 class="about-section-title">Dataset <span class="text-gold">Information</span></h2>
+    </div>
+    <div class="row g-4 mt-3">
+      <div class="col-lg-7">
+        <p class="about-text">
+          The dataset follows the schema of the widely-used
+          <strong>Kaggle "120 Years of Olympic History"</strong> dataset
+          (athlete_events.csv) originally compiled by sports-reference.com.
+          It covers every Summer Olympic Games from Athens 1896 to Tokyo 2020.
+        </p>
+        <h5 class="text-gold mt-4 mb-3">Dataset Schema</h5>
+        <div class="table-responsive">
+          <table class="table table-dark table-bordered about-table">
+            <thead>
+              <tr>
+                <th>Column</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>ID</td><td>Integer</td><td>Unique athlete identifier</td></tr>
+              <tr><td>Name</td><td>String</td><td>Athlete full name</td></tr>
+              <tr><td>Sex</td><td>String (M/F)</td><td>Athlete gender</td></tr>
+              <tr><td>Age</td><td>Float</td><td>Age at time of event</td></tr>
+              <tr><td>Team</td><td>String</td><td>Country / team name</td></tr>
+              <tr><td>NOC</td><td>String (3-char)</td><td>National Olympic Committee code</td></tr>
+              <tr><td>Games</td><td>String</td><td>Olympic edition (e.g. 2000 Summer)</td></tr>
+              <tr><td>Year</td><td>Integer</td><td>Olympic year</td></tr>
+              <tr><td>Season</td><td>String</td><td>Summer or Winter</td></tr>
+              <tr><td>City</td><td>String</td><td>Host city</td></tr>
+              <tr><td>Sport</td><td>String</td><td>Sport category</td></tr>
+              <tr><td>Event</td><td>String</td><td>Specific event within sport</td></tr>
+              <tr><td>Medal</td><td>String / NaN</td><td>Gold, Silver, Bronze or NaN (no medal)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-5">
+        <div class="about-stat-card">
+          <h5 class="text-gold mb-3">Data Preparation Steps</h5>
+          <div class="prep-step">
+            <div class="prep-num">1</div>
+            <div>
+              <strong>Load CSV</strong>
+              <p class="mb-0 small text-muted">Import using <code>pandas.read_csv()</code></p>
+            </div>
+          </div>
+          <div class="prep-step">
+            <div class="prep-num">2</div>
+            <div>
+              <strong>Filter Summer Games</strong>
+              <p class="mb-0 small text-muted">Keep only Season == "Summer"</p>
+            </div>
+          </div>
+          <div class="prep-step">
+            <div class="prep-num">3</div>
+            <div>
+              <strong>Remove Duplicates</strong>
+              <p class="mb-0 small text-muted"><code>df.drop_duplicates()</code></p>
+            </div>
+          </div>
+          <div class="prep-step">
+            <div class="prep-num">4</div>
+            <div>
+              <strong>Handle Missing Age</strong>
+              <p class="mb-0 small text-muted">Fill with median age per gender group</p>
+            </div>
+          </div>
+          <div class="prep-step">
+            <div class="prep-num">5</div>
+            <div>
+              <strong>Standardise Medal Column</strong>
+              <p class="mb-0 small text-muted">NaN = participation (not deleted!)</p>
+            </div>
+          </div>
+          <div class="prep-step">
+            <div class="prep-num">6</div>
+            <div>
+              <strong>Type Conversion</strong>
+              <p class="mb-0 small text-muted">Year → int, Age → float</p>
+            </div>
+          </div>
+          <div class="prep-step">
+            <div class="prep-num">7</div>
+            <div>
+              <strong>Export Cleaned CSV</strong>
+              <p class="mb-0 small text-muted">Save as <code>data/olympics.csv</code></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── TECHNOLOGY STACK ────────────────────────────────────────────── -->
+<section class="section-padded bg-dark-navy" id="technology">
+  <div class="container-xl">
+    <div class="about-section-header">
+      <span class="about-section-num">04</span>
+      <h2 class="about-section-title">Technology <span class="text-gold">Stack</span></h2>
+    </div>
+    <div class="row g-4 mt-3">
+      <div class="col-md-6 col-lg-4">
+        <div class="tech-card">
+          <div class="tech-icon" style="background: rgba(255,215,0,0.15);">🐍</div>
+          <h5 class="tech-name">Python / Flask</h5>
+          <p class="tech-desc">Backend framework for routing, Jinja2 templating, and serving the application.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Flask 3.0</span>
+            <span class="tech-tag">Pandas 2.2</span>
+            <span class="tech-tag">NumPy 1.26</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="tech-card">
+          <div class="tech-icon" style="background: rgba(59,130,246,0.15);">📊</div>
+          <h5 class="tech-name">Tableau</h5>
+          <p class="tech-desc">Interactive dashboard and story creation tool embedded via the Tableau Embedding API v3.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Tableau Public</span>
+            <span class="tech-tag">Embedding API v3</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="tech-card">
+          <div class="tech-icon" style="background: rgba(16,185,129,0.15);">🌐</div>
+          <h5 class="tech-name">HTML / CSS / JS</h5>
+          <p class="tech-desc">Responsive frontend with Bootstrap 5, Chart.js for built-in charts, and custom animations.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Bootstrap 5.3</span>
+            <span class="tech-tag">Chart.js 4</span>
+            <span class="tech-tag">Bootstrap Icons</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="tech-card">
+          <div class="tech-icon" style="background: rgba(239,68,68,0.15);">🚀</div>
+          <h5 class="tech-name">Gunicorn / Render</h5>
+          <p class="tech-desc">Production WSGI server and cloud deployment platform for hosting the Flask application.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Gunicorn 22</span>
+            <span class="tech-tag">Render.com</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="tech-card">
+          <div class="tech-icon" style="background: rgba(139,92,246,0.15);">📁</div>
+          <h5 class="tech-name">Data Pipeline</h5>
+          <p class="tech-desc">Python script for end-to-end data preparation — loading, cleaning, computing stats, and exporting.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Pandas</span>
+            <span class="tech-tag">NumPy</span>
+            <span class="tech-tag">JSON</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="tech-card">
+          <div class="tech-icon" style="background: rgba(245,158,11,0.15);">🔧</div>
+          <h5 class="tech-name">Dev Tools</h5>
+          <p class="tech-desc">Git for version control, python-dotenv for environment management, and Werkzeug for development server.</p>
+          <div class="tech-tags">
+            <span class="tech-tag">Git</span>
+            <span class="tech-tag">python-dotenv</span>
+            <span class="tech-tag">Werkzeug</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── METHODOLOGY ────────────────────────────────────────────────── -->
+<section class="section-padded" id="methodology">
+  <div class="container-xl">
+    <div class="about-section-header">
+      <span class="about-section-num">05</span>
+      <h2 class="about-section-title">Data &amp; Visualisation <span class="text-gold">Methodology</span></h2>
+    </div>
+    <div class="row g-5 mt-2">
+      <div class="col-lg-6">
+        <h5 class="text-gold mb-3"><i class="bi bi-funnel me-2"></i>Data Preparation</h5>
+        <p class="about-text">
+          Raw CSV data is processed using the <code>prepare_data.py</code> script located
+          in the <code>data/</code> directory. The script runs automatically when the Flask
+          app starts if <code>stats.json</code> is not present.
+        </p>
+        <p class="about-text">
+          Key decisions: athlete records without a medal value (NaN) are <em>kept</em>
+          to preserve participation data. These represent athletes who competed but
+          did not win a medal — an important distinction for gender and nation participation analysis.
+        </p>
+        <div class="code-block">
+          <pre><code># Load → Filter → Clean → Compute → Export
+df = pd.read_csv('olympics_raw.csv')
+df = df[df['Season'] == 'Summer']
+df.drop_duplicates(inplace=True)
+df['Medal'] = df['Medal'].where(
+    df['Medal'].isin({'Gold','Silver','Bronze'}), other=np.nan)
+df.to_csv('olympics.csv', index=False)</code></pre>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <h5 class="text-gold mb-3"><i class="bi bi-bar-chart-line me-2"></i>Visualisation Approach</h5>
+        <p class="about-text">
+          Two layers of visualisation are used: <strong>Tableau</strong> for rich,
+          interactive dashboards (embedded via API), and <strong>Chart.js</strong>
+          for built-in charts that render directly from the Flask API without
+          requiring Tableau to be connected.
+        </p>
+        <ul class="about-list">
+          <li><i class="bi bi-dot text-gold fs-4 me-1 align-middle"></i><strong>Map</strong> — Medal distribution by country (Tableau)</li>
+          <li><i class="bi bi-dot text-gold fs-4 me-1 align-middle"></i><strong>Bar Chart</strong> — Top 10 countries, sports (Chart.js + Tableau)</li>
+          <li><i class="bi bi-dot text-gold fs-4 me-1 align-middle"></i><strong>Line Chart</strong> — Medals over time (Chart.js + Tableau)</li>
+          <li><i class="bi bi-dot text-gold fs-4 me-1 align-middle"></i><strong>Stacked Bar</strong> — Gender participation (Chart.js + Tableau)</li>
+          <li><i class="bi bi-dot text-gold fs-4 me-1 align-middle"></i><strong>Doughnut</strong> — Medal type distribution (Chart.js)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── OUTCOMES ────────────────────────────────────────────────────── -->
+<section class="section-padded bg-dark-navy" id="outcomes">
+  <div class="container-xl">
+    <div class="about-section-header">
+      <span class="about-section-num">06</span>
+      <h2 class="about-section-title">Project <span class="text-gold">Outcomes</span></h2>
+    </div>
+    <div class="row g-4 mt-3">
+      <div class="col-md-6 col-lg-4">
+        <div class="outcome-card">
+          <i class="bi bi-check-circle-fill text-gold fs-3 mb-3"></i>
+          <h5>Complete Web Application</h5>
+          <p>5-page Flask application with responsive design, full navigation, and error handling.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="outcome-card">
+          <i class="bi bi-check-circle-fill text-gold fs-3 mb-3"></i>
+          <h5>Cleaned Dataset</h5>
+          <p>Olympics CSV cleaned, deduplicated, and enriched with a stats.json for API responses.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="outcome-card">
+          <i class="bi bi-check-circle-fill text-gold fs-3 mb-3"></i>
+          <h5>Tableau Integration</h5>
+          <p>Dashboard and Story embedded using Tableau Embedding API v3 with graceful fallbacks.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="outcome-card">
+          <i class="bi bi-check-circle-fill text-gold fs-3 mb-3"></i>
+          <h5>Built-in Analytics</h5>
+          <p>8+ Chart.js visualisations rendered from real dataset values via Flask API endpoints.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="outcome-card">
+          <i class="bi bi-check-circle-fill text-gold fs-3 mb-3"></i>
+          <h5>Production Ready</h5>
+          <p>Configured for Render deployment with Gunicorn, environment variables, and requirements.txt.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-4">
+        <div class="outcome-card">
+          <i class="bi bi-check-circle-fill text-gold fs-3 mb-3"></i>
+          <h5>Full Documentation</h5>
+          <p>README, project report, Tableau creation guide, and deployment checklist included.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+function scrollToSection(id, el) {
+  event.preventDefault();
+  document.querySelectorAll('.about-tab-link').forEach(l => l.classList.remove('active'));
+  el.classList.add('active');
+  const target = document.getElementById(id);
+  if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+</script>
+{% endblock %}

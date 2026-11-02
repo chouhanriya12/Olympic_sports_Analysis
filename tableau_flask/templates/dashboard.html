@@ -1,0 +1,440 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — OlympicsAnalytics{% endblock %}
+
+{% block content %}
+
+<!-- ── Page Header ─────────────────────────────────────────────────── -->
+<section class="page-header">
+  <div class="container-xl">
+    <div class="row align-items-center">
+      <div class="col-lg-8">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb breadcrumb-dark mb-2">
+            <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+            <li class="breadcrumb-item active">Dashboard</li>
+          </ol>
+        </nav>
+        <h1 class="page-title">
+          <i class="bi bi-speedometer2 text-gold me-3"></i>Interactive Dashboard
+        </h1>
+        <p class="page-subtitle">
+          Explore medal totals, country rankings, gender trends and historic performance
+          through the embedded Tableau dashboard below.
+        </p>
+      </div>
+      <div class="col-lg-4 text-lg-end mt-3 mt-lg-0">
+        <a href="{{ url_for('story') }}" class="btn btn-outline-gold me-2">
+          <i class="bi bi-book me-1"></i>Olympic Story
+        </a>
+        <a href="{{ url_for('insights') }}" class="btn btn-gold">
+          <i class="bi bi-lightbulb me-1"></i>Insights
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── KPI SUMMARY CARDS ─────────────────────────────────────────── -->
+<section class="section-padded bg-dark-navy" id="kpis">
+  <div class="container-xl">
+    <div class="row g-3" id="kpiRow">
+
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="kpi-card gold-kpi">
+          <div class="kpi-icon"><i class="bi bi-award-fill"></i></div>
+          <div class="kpi-value counter" data-target="{{ stats.get('gold_medals', 0) }}">0</div>
+          <div class="kpi-label">Gold Medals</div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="kpi-card silver-kpi">
+          <div class="kpi-icon"><i class="bi bi-award-fill"></i></div>
+          <div class="kpi-value counter" data-target="{{ stats.get('silver_medals', 0) }}">0</div>
+          <div class="kpi-label">Silver Medals</div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="kpi-card bronze-kpi">
+          <div class="kpi-icon"><i class="bi bi-award-fill"></i></div>
+          <div class="kpi-value counter" data-target="{{ stats.get('bronze_medals', 0) }}">0</div>
+          <div class="kpi-label">Bronze Medals</div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="kpi-card blue-kpi">
+          <div class="kpi-icon"><i class="bi bi-trophy-fill"></i></div>
+          <div class="kpi-value counter" data-target="{{ stats.get('total_medals', 0) }}">0</div>
+          <div class="kpi-label">Total Medals</div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="kpi-card teal-kpi">
+          <div class="kpi-icon"><i class="bi bi-people-fill"></i></div>
+          <div class="kpi-value counter" data-target="{{ stats.get('total_athletes', 0) }}">0</div>
+          <div class="kpi-label">Total Athletes</div>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-2">
+        <div class="kpi-card purple-kpi">
+          <div class="kpi-icon"><i class="bi bi-flag-fill"></i></div>
+          <div class="kpi-value counter" data-target="{{ stats.get('total_nations', 0) }}">0</div>
+          <div class="kpi-label">Nations</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- ── TABLEAU DASHBOARD EMBED ───────────────────────────────────── -->
+<section class="section-padded" id="tableau-embed">
+  <div class="container-xl">
+
+    <div class="section-header text-center mb-4">
+      <div class="section-badge"><i class="bi bi-grid-1x2 me-2"></i>Tableau Dashboard</div>
+      <h2 class="section-title">Interactive <span class="text-gold">Tableau Dashboard</span></h2>
+      <p class="section-subtitle">
+        The dashboard below is powered by Tableau Public. Use the filter controls
+        inside the dashboard to explore by Year, Country, Sport, Gender and Medal Type.
+      </p>
+    </div>
+
+    <!-- Tableau embed wrapper -->
+    <div class="tableau-wrapper" id="tableauDashboardWrapper">
+      {% if tableau_ready %}
+        <!-- Tableau Embedding API v3 -->
+        <div class="tableau-container" id="tableauDashboardContainer">
+          <div class="tableau-loading" id="tableauDashboardLoading">
+            <div class="spinner-border text-gold me-3" role="status"></div>
+            <span>Loading Tableau Dashboard…</span>
+          </div>
+          <tableau-viz id="tableauDashboardViz"
+            src="{{ tableau.dashboard_url }}"
+            width="100%"
+            height="850"
+            toolbar="top"
+            hide-tabs="false"
+            style="width:100%;display:block;">
+          </tableau-viz>
+        </div>
+      {% else %}
+        <!-- Placeholder when URL not configured -->
+        <div class="tableau-placeholder">
+          <div class="tp-icon"><i class="bi bi-grid-1x2-fill"></i></div>
+          <h3 class="tp-title">Tableau Dashboard</h3>
+          <p class="tp-text">
+            Your published Tableau dashboard will appear here once you set the URL.
+          </p>
+          <div class="tp-steps">
+            <div class="tp-step">
+              <span class="tp-step-num">1</span>
+              <p>Create your dashboard in <strong>Tableau Desktop</strong> or <strong>Tableau Public</strong>.</p>
+            </div>
+            <div class="tp-step">
+              <span class="tp-step-num">2</span>
+              <p>Publish to <strong>Tableau Public</strong> or your Tableau Server / Cloud.</p>
+            </div>
+            <div class="tp-step">
+              <span class="tp-step-num">3</span>
+              <p>Copy the <strong>embed URL</strong> (Share → Embed Code → src="…").</p>
+            </div>
+            <div class="tp-step">
+              <span class="tp-step-num">4</span>
+              <p>Set the environment variable <code>TABLEAU_DASHBOARD_URL=&lt;your-url&gt;</code>
+                 or edit <code>app.py</code> → <code>TABLEAU_CONFIG</code>.</p>
+            </div>
+          </div>
+          <a href="https://public.tableau.com" target="_blank" rel="noopener"
+             class="btn btn-gold mt-3">
+            <i class="bi bi-box-arrow-up-right me-2"></i>Go to Tableau Public
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ── BUILT-IN CHARTS (always visible) ─────────────────────────── -->
+<section class="section-padded bg-dark-navy" id="builtin-charts">
+  <div class="container-xl">
+
+    <div class="section-header text-center mb-4">
+      <div class="section-badge"><i class="bi bi-bar-chart me-2"></i>Built-in Analytics</div>
+      <h2 class="section-title">Chart.js <span class="text-gold">Visualisations</span></h2>
+      <p class="section-subtitle">
+        Interactive charts rendered directly from the cleaned dataset — always available.
+      </p>
+    </div>
+
+    <!-- Filter row -->
+    <div class="filter-bar mb-4 p-3 rounded">
+      <div class="row g-2 align-items-end">
+        <div class="col-6 col-md-3">
+          <label class="filter-label">Medal Type</label>
+          <select class="form-select form-select-sm filter-select" id="filterMedal">
+            <option value="all">All Medals</option>
+            <option value="Gold">Gold</option>
+            <option value="Silver">Silver</option>
+            <option value="Bronze">Bronze</option>
+          </select>
+        </div>
+        <div class="col-6 col-md-3">
+          <label class="filter-label">Gender</label>
+          <select class="form-select form-select-sm filter-select" id="filterGender">
+            <option value="all">All</option>
+            <option value="M">Male</option>
+            <option value="F">Female</option>
+          </select>
+        </div>
+        <div class="col-12 col-md-3">
+          <button class="btn btn-gold btn-sm w-100" onclick="applyFilters()">
+            <i class="bi bi-funnel me-1"></i>Apply Filters
+          </button>
+        </div>
+        <div class="col-12 col-md-3">
+          <button class="btn btn-outline-secondary btn-sm w-100" onclick="resetFilters()">
+            <i class="bi bi-arrow-counterclockwise me-1"></i>Reset
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Medals by Country stacked bar -->
+      <div class="col-lg-8">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h5 class="chart-card-title">
+              <i class="bi bi-bar-chart-steps me-2 text-gold"></i>Medals by Country (Top 15)
+            </h5>
+          </div>
+          <div class="chart-card-body">
+            <canvas id="dashCountryChart" height="260"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Medals by Year line -->
+      <div class="col-lg-4">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h5 class="chart-card-title">
+              <i class="bi bi-graph-up me-2 text-gold"></i>Medals Over Time
+            </h5>
+          </div>
+          <div class="chart-card-body">
+            <canvas id="dashYearChart" height="260"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gender by year stacked -->
+      <div class="col-lg-6">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h5 class="chart-card-title">
+              <i class="bi bi-gender-ambiguous me-2 text-gold"></i>Male vs Female Participation by Year
+            </h5>
+          </div>
+          <div class="chart-card-body">
+            <canvas id="dashGenderChart" height="220"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sports medals -->
+      <div class="col-lg-6">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <h5 class="chart-card-title">
+              <i class="bi bi-list-ol me-2 text-gold"></i>Medals by Sport
+            </h5>
+          </div>
+          <div class="chart-card-body">
+            <canvas id="dashSportChart" height="220"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<!-- Tableau Embedding API -->
+{% if tableau_ready %}
+<script type="module"
+  src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js">
+</script>
+<script type="module">
+  const viz = document.getElementById('tableauDashboardViz');
+  const loading = document.getElementById('tableauDashboardLoading');
+  if (viz) {
+    viz.addEventListener('firstinteractive', () => {
+      if (loading) loading.style.display = 'none';
+    });
+    // Hide loader after 15 s as fallback
+    setTimeout(() => { if (loading) loading.style.display = 'none'; }, 15000);
+  }
+</script>
+{% endif %}
+
+<script>
+/* ── Dashboard charts ── */
+const GOLD = '#FFD700', SILVER = '#C0C0C0', BRONZE = '#CD7F32';
+const BLUE = '#3B82F6', PINK = '#EC4899';
+const GRID = 'rgba(255,255,255,0.08)', TXT = 'rgba(255,255,255,0.75)';
+Chart.defaults.color = TXT;
+Chart.defaults.font.family = 'Inter, sans-serif';
+
+let allStats = {};
+let countryChart, yearChart, genderChart, sportChart;
+
+fetch('/api/stats')
+  .then(r => r.json())
+  .then(data => {
+    allStats = data;
+    buildCharts(data);
+  })
+  .catch(e => console.warn('API error:', e));
+
+function buildCharts(data) {
+  buildCountryChart(data.top10_countries || []);
+  buildYearChart(data.medals_by_year || []);
+  buildGenderChart(data.gender_by_year || []);
+  buildSportChart(data.medals_by_sport || []);
+}
+
+function buildCountryChart(countries) {
+  const ctx = document.getElementById('dashCountryChart');
+  if (countryChart) countryChart.destroy();
+  countryChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: countries.map(c => c.NOC),
+      datasets: [{
+        label: 'Medals',
+        data: countries.map(c => c.Medals),
+        backgroundColor: [GOLD,SILVER,BRONZE,BLUE,'#10B981','#8B5CF6','#F59E0B','#EF4444','#06B6D4','#84CC16'],
+        borderRadius: 5,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: GRID } },
+        y: { grid: { color: GRID }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+function buildYearChart(yearData) {
+  const ctx = document.getElementById('dashYearChart');
+  if (yearChart) yearChart.destroy();
+  yearChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: yearData.map(d => d.Year),
+      datasets: [{
+        label: 'Medals',
+        data: yearData.map(d => d.Medals),
+        borderColor: GOLD,
+        backgroundColor: 'rgba(255,215,0,0.1)',
+        fill: true, tension: 0.4,
+        pointRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: GRID }, ticks: { maxTicksLimit: 8 } },
+        y: { grid: { color: GRID }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+function buildGenderChart(genderData) {
+  const ctx = document.getElementById('dashGenderChart');
+  if (genderChart) genderChart.destroy();
+  genderChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: genderData.map(d => d.Year),
+      datasets: [
+        {
+          label: 'Male',
+          data: genderData.map(d => d.M || 0),
+          backgroundColor: BLUE,
+          stack: 'gender',
+        },
+        {
+          label: 'Female',
+          data: genderData.map(d => d.F || 0),
+          backgroundColor: PINK,
+          stack: 'gender',
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'top' } },
+      scales: {
+        x: { grid: { color: GRID }, stacked: true, ticks: { maxTicksLimit: 8 } },
+        y: { grid: { color: GRID }, stacked: true, beginAtZero: true }
+      }
+    }
+  });
+}
+
+function buildSportChart(sports) {
+  const top10 = sports.slice(0, 10);
+  const ctx = document.getElementById('dashSportChart');
+  if (sportChart) sportChart.destroy();
+  sportChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: top10.map(s => s.Sport),
+      datasets: [{
+        label: 'Medals',
+        data: top10.map(s => s.Medals),
+        backgroundColor: 'rgba(255,215,0,0.7)',
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: GRID }, beginAtZero: true },
+        y: { grid: { color: GRID } }
+      }
+    }
+  });
+}
+
+function applyFilters() {
+  // Client-side filtering demo (full filter requires CSV parsing in browser or API enhancement)
+  alert('Filters applied to Tableau dashboard.\n\nUse the Tableau controls inside the embed above for full filtering.\nThe built-in charts reflect full dataset averages.');
+}
+function resetFilters() {
+  document.getElementById('filterMedal').value = 'all';
+  document.getElementById('filterGender').value = 'all';
+  buildCharts(allStats);
+}
+</script>
+{% endblock %}

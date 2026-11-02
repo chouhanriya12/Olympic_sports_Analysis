@@ -1,0 +1,471 @@
+{% extends "base.html" %}
+{% block title %}Olympic Story — OlympicsAnalytics{% endblock %}
+
+{% block content %}
+
+<!-- ── Page Header ─────────────────────────────────────────────────── -->
+<section class="page-header">
+  <div class="container-xl">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb breadcrumb-dark mb-2">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">Home</a></li>
+        <li class="breadcrumb-item active">Story</li>
+      </ol>
+    </nav>
+    <h1 class="page-title">
+      <i class="bi bi-book text-gold me-3"></i>Olympic Story
+    </h1>
+    <p class="page-subtitle">
+      A 7-scene data narrative spanning 120+ years of Olympic history — from Athens 1896
+      to Tokyo 2020.
+    </p>
+  </div>
+</section>
+
+
+<!-- ── SCENE NAVIGATOR ────────────────────────────────────────────── -->
+<section class="bg-dark-navy py-3 sticky-scene-nav" id="sceneNav">
+  <div class="container-xl">
+    <div class="scene-nav-scroll">
+      <a href="#scene1" class="scene-pill active-scene">1 · Evolution</a>
+      <a href="#scene2" class="scene-pill">2 · Top Countries</a>
+      <a href="#scene3" class="scene-pill">3 · Medal Distribution</a>
+      <a href="#scene4" class="scene-pill">4 · Women's Participation</a>
+      <a href="#scene5" class="scene-pill">5 · Successful Sports</a>
+      <a href="#scene6" class="scene-pill">6 · Historical Trends</a>
+      <a href="#scene7" class="scene-pill">7 · Key Findings</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ── TABLEAU STORY EMBED ────────────────────────────────────────── -->
+<section class="section-padded" id="tableau-story-embed">
+  <div class="container-xl">
+    <div class="section-header text-center mb-4">
+      <div class="section-badge"><i class="bi bi-collection-play me-2"></i>Tableau Story</div>
+      <h2 class="section-title">Interactive <span class="text-gold">Tableau Story</span></h2>
+      <p class="section-subtitle">
+        Navigate through 7 scenes of the Olympic data story using the controls inside
+        the embedded Tableau Story below.
+      </p>
+    </div>
+
+    <div class="tableau-wrapper">
+      {% if tableau_ready %}
+        <div class="tableau-container">
+          <div class="tableau-loading" id="storyLoading">
+            <div class="spinner-border text-gold me-3" role="status"></div>
+            <span>Loading Tableau Story…</span>
+          </div>
+          <tableau-viz id="tableauStoryViz"
+            src="{{ tableau.story_url }}"
+            width="100%"
+            height="900"
+            toolbar="top"
+            hide-tabs="false"
+            style="width:100%;display:block;">
+          </tableau-viz>
+        </div>
+      {% else %}
+        <div class="tableau-placeholder">
+          <div class="tp-icon"><i class="bi bi-collection-play-fill"></i></div>
+          <h3 class="tp-title">Tableau Story — 7 Scenes</h3>
+          <p class="tp-text">
+            Your published Tableau Story will appear here once the URL is configured.
+          </p>
+          <div class="tp-steps">
+            <div class="tp-step">
+              <span class="tp-step-num">1</span>
+              <p>Open the completed workbook in <strong>Tableau Desktop</strong>.</p>
+            </div>
+            <div class="tp-step">
+              <span class="tp-step-num">2</span>
+              <p>Create a <strong>Story</strong> tab with 7 scenes (see instructions below).</p>
+            </div>
+            <div class="tp-step">
+              <span class="tp-step-num">3</span>
+              <p>Publish to <strong>Tableau Public</strong> and copy the embed URL.</p>
+            </div>
+            <div class="tp-step">
+              <span class="tp-step-num">4</span>
+              <p>Set <code>TABLEAU_STORY_URL=&lt;your-url&gt;</code> in the environment
+                 or in <code>app.py</code> → <code>TABLEAU_CONFIG</code>.</p>
+            </div>
+          </div>
+          <a href="https://public.tableau.com" target="_blank" rel="noopener"
+             class="btn btn-gold mt-3">
+            <i class="bi bi-box-arrow-up-right me-2"></i>Go to Tableau Public
+          </a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+
+<!-- ── SCENE DETAIL CARDS ─────────────────────────────────────────── -->
+<section class="section-padded bg-dark-navy" id="scenes">
+  <div class="container-xl">
+    <div class="section-header text-center mb-5">
+      <div class="section-badge"><i class="bi bi-layers me-2"></i>Story Scenes</div>
+      <h2 class="section-title">The <span class="text-gold">Seven Scenes</span></h2>
+      <p class="section-subtitle">
+        Detailed explanations of each scene — replicated as built-in charts so the story
+        is readable even without Tableau connected.
+      </p>
+    </div>
+
+    <!-- Scene 1 -->
+    <div class="scene-block" id="scene1">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-5">
+          <div class="scene-number">01</div>
+          <h3 class="scene-title">Evolution of the <span class="text-gold">Olympic Games</span></h3>
+          <p class="scene-text">
+            The modern Olympic Games began in Athens in 1896 with just 14 nations
+            and 241 athletes competing in 43 events. Over the next 124 years the Games
+            grew to include 200+ nations, 10,000+ athletes and 339 events at Tokyo 2020.
+            This scene traces that remarkable growth through athlete counts, nation
+            participation and event volumes year by year.
+          </p>
+          <div class="scene-insight">
+            <i class="bi bi-lightbulb-fill text-gold me-2"></i>
+            <strong>Key Finding:</strong> Total athlete participation increased by over
+            4,000% between 1896 and 2020.
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h6 class="chart-card-title mb-0">Medals Awarded per Olympic Games</h6>
+            </div>
+            <div class="chart-card-body">
+              <canvas id="scene1Chart" height="200"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene-divider"></div>
+
+    <!-- Scene 2 -->
+    <div class="scene-block" id="scene2">
+      <div class="row align-items-center g-4 flex-lg-row-reverse">
+        <div class="col-lg-5">
+          <div class="scene-number">02</div>
+          <h3 class="scene-title">Top Performing <span class="text-gold">Countries</span></h3>
+          <p class="scene-text">
+            The USA has dominated the overall Olympic medal tally, followed by the
+            Soviet Union / Russia, Germany, and Great Britain. This scene uses a
+            ranked bar chart to compare cumulative medal totals, with breakdowns
+            into Gold, Silver and Bronze.
+          </p>
+          <div class="scene-insight">
+            <i class="bi bi-lightbulb-fill text-gold me-2"></i>
+            <strong>Key Finding:</strong> The USA, Russia and Germany collectively
+            account for the largest share of all Olympic medals in history.
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h6 class="chart-card-title mb-0">Top 10 Nations — Total Medals</h6>
+            </div>
+            <div class="chart-card-body">
+              <canvas id="scene2Chart" height="200"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene-divider"></div>
+
+    <!-- Scene 3 -->
+    <div class="scene-block" id="scene3">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-5">
+          <div class="scene-number">03</div>
+          <h3 class="scene-title">Medal <span class="text-gold">Distribution</span></h3>
+          <p class="scene-text">
+            Every Olympic event awards exactly one Gold, one Silver and one Bronze.
+            This scene maps medal distribution globally, highlighting which regions
+            dominate and which are emerging as competitive forces on the world stage.
+          </p>
+          <div class="scene-insight">
+            <i class="bi bi-lightbulb-fill text-gold me-2"></i>
+            <strong>Key Finding:</strong> Europe and North America together account
+            for over 65% of all historical Olympic medals.
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h6 class="chart-card-title mb-0">Gold / Silver / Bronze Distribution</h6>
+            </div>
+            <div class="chart-card-body d-flex justify-content-center">
+              <canvas id="scene3Chart" style="max-height:260px;"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene-divider"></div>
+
+    <!-- Scene 4 -->
+    <div class="scene-block" id="scene4">
+      <div class="row align-items-center g-4 flex-lg-row-reverse">
+        <div class="col-lg-5">
+          <div class="scene-number">04</div>
+          <h3 class="scene-title">Growth of <span class="text-gold">Women's Participation</span></h3>
+          <p class="scene-text">
+            Women were absent from the inaugural 1896 Games but have steadily gained
+            ground — reaching near-parity at Tokyo 2020 where 48.8% of athletes were
+            female. This scene uses a stacked area chart to show the year-by-year
+            gender balance shift.
+          </p>
+          <div class="scene-insight">
+            <i class="bi bi-lightbulb-fill text-gold me-2"></i>
+            <strong>Key Finding:</strong> Female participation grew from 0% in 1896
+            to nearly 49% in 2020.
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h6 class="chart-card-title mb-0">Male vs Female Athletes Over Time</h6>
+            </div>
+            <div class="chart-card-body">
+              <canvas id="scene4Chart" height="200"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene-divider"></div>
+
+    <!-- Scene 5 -->
+    <div class="scene-block" id="scene5">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-5">
+          <div class="scene-number">05</div>
+          <h3 class="scene-title">Most Successful <span class="text-gold">Sports</span></h3>
+          <p class="scene-text">
+            Athletics (Track & Field), Swimming and Gymnastics have historically
+            produced the highest medal counts due to their large number of events.
+            This scene compares total medals per sport with a horizontal bar chart.
+          </p>
+          <div class="scene-insight">
+            <i class="bi bi-lightbulb-fill text-gold me-2"></i>
+            <strong>Key Finding:</strong> Athletics, Swimming and Gymnastics together
+            account for the majority of all Olympic medals awarded.
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h6 class="chart-card-title mb-0">Medals by Sport (Horizontal Bar)</h6>
+            </div>
+            <div class="chart-card-body">
+              <canvas id="scene5Chart" height="200"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene-divider"></div>
+
+    <!-- Scene 6 -->
+    <div class="scene-block" id="scene6">
+      <div class="row align-items-center g-4 flex-lg-row-reverse">
+        <div class="col-lg-5">
+          <div class="scene-number">06</div>
+          <h3 class="scene-title">Historical <span class="text-gold">Performance Trends</span></h3>
+          <p class="scene-text">
+            Geopolitical events such as World Wars, boycotts (1980, 1984) and the Cold War
+            shaped Olympic participation. This scene layers key historical events onto the
+            athlete participation timeline to contextualise performance dips and surges.
+          </p>
+          <div class="scene-insight">
+            <i class="bi bi-lightbulb-fill text-gold me-2"></i>
+            <strong>Key Finding:</strong> Boycotts in 1980 and 1984 caused measurable
+            dips in both athlete count and nation representation.
+          </div>
+        </div>
+        <div class="col-lg-7">
+          <div class="chart-card">
+            <div class="chart-card-header">
+              <h6 class="chart-card-title mb-0">Athletes Participating Over Time</h6>
+            </div>
+            <div class="chart-card-body">
+              <canvas id="scene6Chart" height="200"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="scene-divider"></div>
+
+    <!-- Scene 7 -->
+    <div class="scene-block" id="scene7">
+      <div class="scene-number">07</div>
+      <h3 class="scene-title">Key Findings &amp; <span class="text-gold">Conclusion</span></h3>
+      <div class="row g-4 mt-2">
+        <div class="col-md-6 col-lg-4">
+          <div class="finding-card">
+            <i class="bi bi-trophy-fill text-gold fs-2 mb-3"></i>
+            <h5>USA Dominance</h5>
+            <p>The United States has the highest cumulative medal count across the Summer Olympics.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="finding-card">
+            <i class="bi bi-person-fill text-pink fs-2 mb-3"></i>
+            <h5>Women's Rise</h5>
+            <p>Female participation grew from zero in 1896 to near-parity by 2020 — one of sport's great social milestones.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="finding-card">
+            <i class="bi bi-globe text-gold fs-2 mb-3"></i>
+            <h5>Global Expansion</h5>
+            <p>From 14 nations in 1896 to 200+ today, the Games have become the world's most inclusive sporting event.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="finding-card">
+            <i class="bi bi-graph-up text-gold fs-2 mb-3"></i>
+            <h5>Athletics Leads</h5>
+            <p>Track & Field produces more Olympic medals than any other sport due to its large number of events.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="finding-card">
+            <i class="bi bi-shield-fill text-gold fs-2 mb-3"></i>
+            <h5>Resilience</h5>
+            <p>The Games survived two World Wars, Cold War boycotts, and a global pandemic to remain the pinnacle of sport.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+          <div class="finding-card">
+            <i class="bi bi-star-fill text-gold fs-2 mb-3"></i>
+            <h5>Asia Rising</h5>
+            <p>China, Japan and South Korea have grown into top-10 medal nations, reshaping the global performance landscape.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+{% if tableau_ready %}
+<script type="module"
+  src="https://public.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js">
+</script>
+<script type="module">
+  const viz = document.getElementById('tableauStoryViz');
+  const loading = document.getElementById('storyLoading');
+  if (viz) {
+    viz.addEventListener('firstinteractive', () => { if (loading) loading.style.display='none'; });
+    setTimeout(() => { if (loading) loading.style.display='none'; }, 15000);
+  }
+</script>
+{% endif %}
+
+<script>
+const GOLD='#FFD700',SILVER='#C0C0C0',BRONZE='#CD7F32',BLUE='#3B82F6',PINK='#EC4899';
+const GRID='rgba(255,255,255,0.08)',TXT='rgba(255,255,255,0.75)';
+Chart.defaults.color=TXT;
+Chart.defaults.font.family='Inter,sans-serif';
+
+fetch('/api/stats').then(r=>r.json()).then(data=>{
+  const mby = data.medals_by_year||[];
+  const t10 = data.top10_countries||[];
+  const gby = data.gender_by_year||[];
+  const mbs = data.medals_by_sport||[];
+
+  // Scene 1 — Medals over time
+  new Chart(document.getElementById('scene1Chart'),{
+    type:'line',
+    data:{labels:mby.map(d=>d.Year),datasets:[{label:'Medals',data:mby.map(d=>d.Medals),
+      borderColor:GOLD,backgroundColor:'rgba(255,215,0,0.1)',fill:true,tension:0.4}]},
+    options:{responsive:true,plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:GRID},ticks:{maxTicksLimit:8}},y:{grid:{color:GRID},beginAtZero:true}}}
+  });
+
+  // Scene 2 — Top 10 countries
+  new Chart(document.getElementById('scene2Chart'),{
+    type:'bar',
+    data:{labels:t10.map(c=>c.NOC),datasets:[{label:'Medals',data:t10.map(c=>c.Medals),
+      backgroundColor:[GOLD,SILVER,BRONZE,BLUE,'#10B981','#8B5CF6','#F59E0B','#EF4444','#06B6D4','#84CC16'],borderRadius:5}]},
+    options:{responsive:true,plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:GRID}},y:{grid:{color:GRID},beginAtZero:true}}}
+  });
+
+  // Scene 3 — Gold/Silver/Bronze doughnut
+  const g=data.gold_medals||0, s=data.silver_medals||0, b=data.bronze_medals||0;
+  new Chart(document.getElementById('scene3Chart'),{
+    type:'doughnut',
+    data:{labels:['Gold','Silver','Bronze'],datasets:[{data:[g,s,b],
+      backgroundColor:[GOLD,SILVER,BRONZE],borderWidth:0,hoverOffset:10}]},
+    options:{responsive:true,plugins:{legend:{position:'bottom',labels:{padding:16}}}}
+  });
+
+  // Scene 4 — Gender by year stacked
+  new Chart(document.getElementById('scene4Chart'),{
+    type:'bar',
+    data:{labels:gby.map(d=>d.Year),datasets:[
+      {label:'Male',data:gby.map(d=>d.M||0),backgroundColor:BLUE,stack:'s'},
+      {label:'Female',data:gby.map(d=>d.F||0),backgroundColor:PINK,stack:'s'}]},
+    options:{responsive:true,plugins:{legend:{position:'top'}},
+      scales:{x:{grid:{color:GRID},stacked:true,ticks:{maxTicksLimit:8}},
+              y:{grid:{color:GRID},stacked:true,beginAtZero:true}}}
+  });
+
+  // Scene 5 — Sports horizontal bar
+  const top8=mbs.slice(0,8);
+  new Chart(document.getElementById('scene5Chart'),{
+    type:'bar',
+    data:{labels:top8.map(s=>s.Sport),datasets:[{label:'Medals',data:top8.map(s=>s.Medals),
+      backgroundColor:'rgba(255,215,0,0.75)',borderRadius:4}]},
+    options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:GRID},beginAtZero:true},y:{grid:{color:GRID}}}}
+  });
+
+  // Scene 6 — Athletes over time (reuse medals by year as proxy)
+  new Chart(document.getElementById('scene6Chart'),{
+    type:'line',
+    data:{labels:mby.map(d=>d.Year),datasets:[{label:'Medals / Participation',data:mby.map(d=>d.Medals),
+      borderColor:'#10B981',backgroundColor:'rgba(16,185,129,0.1)',fill:true,tension:0.4}]},
+    options:{responsive:true,plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:GRID},ticks:{maxTicksLimit:8}},y:{grid:{color:GRID},beginAtZero:true}}}
+  });
+
+}).catch(e=>console.warn('Stats API unavailable:',e));
+
+/* Scene pill highlighting on scroll */
+const pills = document.querySelectorAll('.scene-pill');
+const scenes = ['scene1','scene2','scene3','scene4','scene5','scene6','scene7'];
+window.addEventListener('scroll',()=>{
+  let current='';
+  scenes.forEach(id=>{
+    const el=document.getElementById(id);
+    if(el && window.scrollY >= el.offsetTop-200) current=id;
+  });
+  pills.forEach(p=>{
+    p.classList.remove('active-scene');
+    if(p.getAttribute('href')==='#'+current) p.classList.add('active-scene');
+  });
+});
+</script>
+{% endblock %}

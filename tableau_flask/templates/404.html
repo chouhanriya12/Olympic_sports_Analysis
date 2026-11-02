@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Page Not Found — OlympicsAnalytics{% endblock %}
+{% block content %}
+<section class="error-page">
+  <div class="container-xl text-center">
+    <div class="error-code">404</div>
+    <h2 class="error-title">Page Not Found</h2>
+    <p class="error-text">The page you're looking for doesn't exist or has been moved.</p>
+    <a href="{{ url_for('index') }}" class="btn btn-gold btn-lg px-5 mt-3">
+      <i class="bi bi-house me-2"></i>Back to Home
+    </a>
+  </div>
+</section>
+{% endblock %}
